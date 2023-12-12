@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const helmet = require('helmet')
 
+/* 
 app.use(helmet.hidePoweredBy())
 app.use(helmet.frameguard({ action: 'deny' }))
 app.use(helmet.xssFilter())
@@ -12,9 +13,21 @@ app.use(helmet.hsts({ maxAge: ninetyDaysInSeconds, force: true }))
 app.use(helmet.dnsPrefetchControl())
 app.use(helmet.noCache())
 app.use(helmet.contentSecurityPolicy({ directives: { defaultSrc: ["'self'"], scriptSrc: ["'self'", 'trusted-cdn.com'] } }))
+ */
 
-
-
+// In real applications we use this configuration, because helmet() include all protections above , less CSP ,dns and noCache
+app.use(helmet({
+  frameguard: {         // configure
+    action: 'deny'
+  },
+  contentSecurityPolicy: {    // enable and configure
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ['style.com'],
+    }
+  },
+  dnsPrefetchControl: false     // disable
+}))
 
 
 
